@@ -38,10 +38,10 @@ namespace llama_cs
             // UpdateSystemMessage();
         }
 
-        public InstructSequence(string instructType = "alpaca", string userName = "user", string assistantName = "assistant")
+        public InstructSequence(string instructType = "alpaca")
         {
-            UserName = userName;
-            AssistantName = assistantName;
+            UserName = "{{user}}";
+            AssistantName = "{{char}}";
 
             switch (instructType.ToLower())
             {
@@ -77,7 +77,7 @@ namespace llama_cs
                     // throw new ArgumentException($"Unknown instruct type: {instructType}");
             }
 
-            UpdateSystemMessage();
+            // UpdateSystemMessage();
         }
 
         public void UpdateSystemMessage()
