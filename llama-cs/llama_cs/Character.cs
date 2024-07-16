@@ -9,6 +9,8 @@ namespace llama_cs
 {
     public class Character
     {
+        private string _jsonString;
+        
         public string Name { get; private set; }
         public string Description { get; private set; }
         public string Personality { get; private set; }
@@ -16,23 +18,35 @@ namespace llama_cs
         public string FirstMessage { get; private set; }
         public string MessageExamples { get; private set; }
 
-        private readonly InstructSequence _instructSequence;
+        public InstructSequence _instructSequence;
 
-        public Character(string jsonString, InstructSequence instructSequence)
+        public Character(string jsonString)
         {
-            _instructSequence = instructSequence;
+            if (jsonString.Trim() == "")
+            {
+                Name = "assistant";
+                Description = "";
+                Personality = "";
+                Scenario = "";
+                FirstMessage = "";
+                MessageExamples = "";
+            }
+            
+            _instructSequence = null;
 
             if (jsonString.EndsWith(".json"))
             {
                 jsonString = File.ReadAllText(jsonString);
             }
 
+            _jsonString = jsonString;
+
             ParseJson(jsonString);
         }
 
-        private void ParseJson(string jsonString)
+        public void ParseJson(string userName)
         {
-            JObject json = JObject.Parse(jsonString);
+            JObject json = JObject.Parse(_jsonString);
 
             Name = json["name"]?.ToString() ?? json["data"]?["name"]?.ToString() ?? "";
             Description = json["description"]?.ToString() ?? json["data"]?["description"]?.ToString() ?? "";
@@ -49,7 +63,8 @@ namespace llama_cs
             FirstMessage = ReplacePlaceholderNames(FirstMessage);
 
             string mesExample = json["mes_example"]?.ToString() ?? json["data"]?["mes_example"]?.ToString() ?? "";
-            MessageExamples = ConvertMessageExamplesToInstructFormat(mesExample);
+            MessageExamples = mesExample;
+            // MessageExamples = ConvertMessageExamplesToInstructFormat(mesExample);
         }
 
         private string ConvertMessageExamplesToInstructFormat(string mesExample)
@@ -80,14 +95,14 @@ namespace llama_cs
 
         private string ReplacePlaceholderNames(string input)
         {
-            return input.Replace("{{user}}", _instructSequence.UserName).Replace("{{char}}", _instructSequence.AssistantName);
+            return input.Replace("{{char}}", Name);//.Replace("{{user}}", _instructSequence.UserName);
         }
     }
 
     public class User
     {
-        public string Name { get; private set; }
-        public string Description { get; private set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
 
         public User (string name, string description)
         {
@@ -98,6 +113,12 @@ namespace llama_cs
         public User (string name)
         {
             Name = name;
+            Description = "";
+        }
+
+        public User ()
+        {
+            Name = "user";
             Description = "";
         }
     }

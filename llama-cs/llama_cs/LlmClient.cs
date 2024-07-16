@@ -19,23 +19,41 @@ namespace llama_cs
         public List<string> ChatHistory { get; } = new List<string>();
         public List<string> RawChatHistory { get; } = new List<string>();
 
-        public string InstructInputText = "";
-
         public LlmClient(InstructSequence sequence, LlmParameters llmParameters = null, Character assistantCharacter = null, User user = null, int port = 8080)
         {
-            sequence.UserName = user.Name;
-            sequence.AssistantName = assistantCharacter.Name;
-            sequence.UpdateSystemMessage();
-            
-            _apiUrl = $"http://localhost:{port}/completion";
-            _formatter = new InstructFormatter(sequence);
-            _httpClient = new HttpClient();
-            _apiParameters = llmParameters ?? new LlmParameters();
-            _assistantCharacter = assistantCharacter;
             if (user == null)
             {
                 user = new User("user");
             }
+            if (sequence == null)
+            {
+                sequence = new InstructSequence();
+            }
+
+            if (user != null)
+            {
+                sequence.User = user;
+            }
+
+            if (llmParameters == null)
+            {
+                llmParameters = new LlmParameters();
+            }
+            else if (llmParameters.grammar == "japanese")
+            {
+                llmParameters.grammar = "root ::= (japanese-char | asterisk-token | quote-token | other-punctuation | special-token)+\n\njapanese-char ::= [ぁ-ゟァ-ヿ一-龯]\n\nasterisk-token ::= [^*]* \"*\" [^*]*\n\nquote-token ::= [^\"]* \"\\\"\" [^\"]*\n\nother-punctuation ::= [、。！？．：；｝｛ー～]\n\nspecial-token ::= \"<\" [^>]+ \">\" | \"<|\" [^|>]+ \"|>\" | \"[\" [^\\]]+ \"]\"";
+            }
+
+            assistantCharacter._instructSequence = sequence;
+            sequence.User.Name = user.Name;
+            sequence.AssistantName = assistantCharacter.Name;
+            sequence.UpdateSystemMessage();
+
+            _apiUrl = $"http://localhost:{port}/completion";
+            _formatter = new InstructFormatter(sequence);
+            _httpClient = new HttpClient();
+            _apiParameters = llmParameters;
+            _assistantCharacter = assistantCharacter;
             _user = user;
         }
 
@@ -59,7 +77,7 @@ namespace llama_cs
 
         public void AddUserMessage(string message)
         {
-            ChatHistory.Add($"{_formatter._sequence.UserName}: {message}");
+            ChatHistory.Add($"{_formatter._sequence.User.Name}: {message}");
             RawChatHistory.Add(_formatter.FormatUserMessage(message));
         }
 
@@ -74,7 +92,6 @@ namespace llama_cs
             AddUserMessage(userMessage);
 
             var instructString = _formatter.FormatMessage(RawChatHistory, userMessage, _assistantCharacter);
-            InstructInputText = instructString;
 
             var response = await SendCompletionRequest(instructString);
 
@@ -117,6 +134,11 @@ namespace llama_cs
         {
             var suffixIndex = response.IndexOf(_formatter._sequence.AssistantMessageSuffix);
             return suffixIndex >= 0 ? response.Substring(0, suffixIndex) : response;
+        }
+
+        public string GetInstructString()
+        {
+            return _formatter.FormatMessage(RawChatHistory, "", _assistantCharacter);
         }
     }
 }

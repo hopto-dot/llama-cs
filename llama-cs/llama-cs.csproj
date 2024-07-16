@@ -9,12 +9,14 @@
 	<Authors>hopto-dot</Authors>
 	<PackageProjectUrl>https://github.com/hopto-dot/llama-cs</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/hopto-dot/llama-cs</RepositoryUrl>
-	
-	<Version>0.0.4</Version>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<Version>0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	<None Include="README.md" Pack="true" PackagePath=""/>
   </ItemGroup>
 
 </Project>
