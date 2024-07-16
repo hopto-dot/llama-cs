@@ -62,7 +62,7 @@ var client = new LlmClient(instructSequence, llmParameters, character, user);
 No problem!
 
 Specify it yourself
-```
+```cs
 var newInstructSequence = new InstructSequence("### Instruction:\n", // UserMessagePrefix
                                                "\n\n",               // UserMessageSuffix
                                                "### Response:\n",    // AssistantMessagePrefix
