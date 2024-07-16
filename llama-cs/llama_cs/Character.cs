@@ -83,4 +83,22 @@ namespace llama_cs
             return input.Replace("{{user}}", _instructSequence.UserName).Replace("{{char}}", _instructSequence.AssistantName);
         }
     }
+
+    public class User
+    {
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+
+        public User (string name, string description)
+        {
+            Name = name;
+            Description = description;
+        }
+
+        public User (string name)
+        {
+            Name = name;
+            Description = "";
+        }
+    }
 }

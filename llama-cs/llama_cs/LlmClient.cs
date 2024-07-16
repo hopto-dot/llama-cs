@@ -14,17 +14,25 @@ namespace llama_cs
         private readonly HttpClient _httpClient;
         private LlmParameters _apiParameters;
         private Character _assistantCharacter;
+        private User _user;
 
         public List<string> ChatHistory { get; } = new List<string>();
         public List<string> RawChatHistory { get; } = new List<string>();
 
-        public LlmClient(InstructSequence sequence, LlmParameters llmParameters = null, Character assistantCharacter = null, int port = 8080)
+        public string InstructInputText = "";
+
+        public LlmClient(InstructSequence sequence, LlmParameters llmParameters = null, Character assistantCharacter = null, User user = null, int port = 8080)
         {
             _apiUrl = $"http://localhost:{port}/completion";
             _formatter = new InstructFormatter(sequence);
             _httpClient = new HttpClient();
             _apiParameters = llmParameters ?? new LlmParameters();
             _assistantCharacter = assistantCharacter;
+            if (user == null)
+            {
+                user = new User("user");
+            }
+            _user = user;
         }
 
         public void SetApiParameter<T>(string parameterName, T value)
@@ -62,6 +70,7 @@ namespace llama_cs
             AddUserMessage(userMessage);
 
             var instructString = _formatter.FormatMessage(RawChatHistory, userMessage, _assistantCharacter);
+            InstructInputText = instructString;
 
             var response = await SendCompletionRequest(instructString);
 

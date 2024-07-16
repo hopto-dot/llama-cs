@@ -35,7 +35,7 @@ namespace llama_cs
 
                     string characterPrompt = characterPromptBuilder.ToString();
 
-                    systemMessage = systemMessage.Replace("ASS_CHARACTER", "\n" + characterPrompt);
+                    systemMessage = systemMessage.Replace("{{char_prompt}}", characterPrompt);
                 }
 
                 sb.Append(systemMessage + "\n");

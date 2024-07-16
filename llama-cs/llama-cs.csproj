@@ -6,6 +6,11 @@
     <RootNamespace>llama_cs</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<Authors>hopto-dot</Authors>
+	<PackageProjectUrl>https://github.com/hopto-dot/llama-cs</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/hopto-dot/llama-cs</RepositoryUrl>
+	
+	<Version>0.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
