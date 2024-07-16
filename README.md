@@ -40,10 +40,10 @@ llmParameters.temperature = 1;
 llmParameters.n_predict = 50; // max tokens to generate (default 500)
 llmParameters.grammar = File.ReadAllText(@"C:\Users\user\Documents\Git\llama.cpp\grammars\japanese.gbnf"); // specify grammar the llm follows
 
-var client = new LlmClient(instructSequence, llmParameters);
+var client = new LlmClient(instructSequence, llmParameters, port: 1234); // specify the port the server is running
 ```
 
-### Other client options
+### Roleplay as a person with a character
 ```cs
 var instructSequence = new InstructSequence("command-r");
 
@@ -53,14 +53,10 @@ var user = new User("Gavin", "Gavin is a 20 year old guy that wants to learn abo
 var llmParameters = new LlmParameters();
 llmParameters.AddLogitBias(12309, -100); // ban token with ID 12309
 
-// You can specify what port llama.cpp inference server is running on (default is 8000. Specified here as 1235)
-var client = new LlmClient(instructSequence, llmParameters, character, user, 1235);
-
-// GetInstructString() returns a string that is the whole context of the conversation (what the llm sees).
-client.GetInstructString(); // print me, at the moment this does nothing
+var client = new LlmClient(instructSequence, llmParameters, character, user);
 ```
 ## Advanced
-### The library doesn't support a instruct pattern?
+### The library doesn't support an instruct pattern?
 No problem!
 
 Specify it yourself
@@ -83,6 +79,13 @@ If you want to specify a character and username, you should include `{{char_prom
 Sometimes enabling `IncludeNames` makes it easier for the llm to understand who is who, however can confuse it just as much. Experiment with it.
 
 Currently, `UseUserMessageAsSystem` does nothing.
+
+## See what text the llm is passed
+`GetInstructString()` returns the whole context of the conversation (what the llm sees) as a string.
+
+```cs
+client.GetInstructString(); // print with Console.WriteLine(), at the moment this does nothing
+```
 
 ## Example simple chat app
 ```cs
