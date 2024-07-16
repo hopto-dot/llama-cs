@@ -23,6 +23,10 @@ namespace llama_cs
 
         public LlmClient(InstructSequence sequence, LlmParameters llmParameters = null, Character assistantCharacter = null, User user = null, int port = 8080)
         {
+            sequence.UserName = user.Name;
+            sequence.AssistantName = assistantCharacter.Name;
+            sequence.UpdateSystemMessage();
+            
             _apiUrl = $"http://localhost:{port}/completion";
             _formatter = new InstructFormatter(sequence);
             _httpClient = new HttpClient();

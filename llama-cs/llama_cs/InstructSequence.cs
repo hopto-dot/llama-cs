@@ -22,8 +22,7 @@ namespace llama_cs
 
         public InstructSequence(string userMessagePrefix, string userMessageSuffix,
                                 string assistantMessagePrefix, string assistantMessageSuffix,
-                                bool includeNames = false, string userName = "user",
-                                string assistantName = "assistant", bool useUserMessageAsSystem = false,
+                                bool includeNames = false, bool useUserMessageAsSystem = false,
                                 string systemMessage = "<start_of_turn>user\nYou are an expert actor that can fully immerse yourself into any role given. You do not break character for any reason and always talk in first person. Currently your role is ASSISTANT, which is described in detail below. As ASSISTANT, continue the exchange with USER.{{char_prompt}}<end_of_turn>")
         {
             UserMessagePrefix = userMessagePrefix;
@@ -32,11 +31,11 @@ namespace llama_cs
             AssistantMessageSuffix = assistantMessageSuffix;
             UseUserMessageAsSystem = useUserMessageAsSystem;
             IncludeNames = includeNames;
-            UserName = userName;
-            AssistantName = assistantName;
+            UserName = "{{user}}";
+            AssistantName = "{{char}}";
             SystemMessage = systemMessage;
 
-            UpdateSystemMessage();
+            // UpdateSystemMessage();
         }
 
         public InstructSequence(string instructType = "alpaca", string userName = "user", string assistantName = "assistant")
@@ -81,7 +80,7 @@ namespace llama_cs
             UpdateSystemMessage();
         }
 
-        private void UpdateSystemMessage()
+        public void UpdateSystemMessage()
         {
             if (!string.IsNullOrEmpty(UserName))
             {
