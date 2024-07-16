@@ -12,7 +12,7 @@ using llama_cs;
 
 ## Simple method
 ```cs
-var client = new LlmClient(new InstructSequence());
+var client = new LlmClient(new InstructSequence()); // Default InstructSequence uses Alpaca instruct formatting
 client.AddAssistantMessage("Hello, how can I help?"); // Manually add a message from the assistant
 
 string response = client.GetResponse("What is the meaning of life?").Result;
