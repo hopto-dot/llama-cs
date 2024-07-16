@@ -1,5 +1,5 @@
 # llama-cs
-A sillytaven-like c# library for interfacing with llama.cpp inference server
+A sillytaven-like c# library for interfacing with llama.cpp's [inference server](https://github.com/ggerganov/llama.cpp/tree/master/examples/server).
 
 ## How to use
 
