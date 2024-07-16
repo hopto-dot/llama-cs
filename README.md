@@ -10,7 +10,7 @@ using llama_cs;
 
 ## Simple method
 ```cs
-var client = new LlmClient();
+var client = new LlmClient(new InstructSequence());
 client.AddAssistantMessage("Hello, how can I help?"); // Manually add a message from the assistant
 
 string response = client.GetResponse("What is the meaning of life?").Result;
@@ -51,7 +51,7 @@ var user = new User("Gavin", "Gavin is a 20 year old guy that wants to learn abo
 var llmParameters = new LlmParameters();
 llmParameters.AddLogitBias(12309, -100); // ban token with ID 12309
 
-// You can specify what port llama.cpp inference server is running on
+// You can specify what port llama.cpp inference server is running on (default is 8000. Specified here as 1235)
 var client = new LlmClient(instructSequence, llmParameters, character, user, 1235);
 
 // GetInstructString() returns a string that is the whole context of the conversation (what the llm sees).
@@ -81,3 +81,28 @@ If you want to specify a character and username, you should include `{{char_prom
 Sometimes enabling `IncludeNames` makes it easier for the llm to understand who is who, however can confuse it just as much. Experiment with it.
 
 Currently, `UseUserMessageAsSystem` does nothing.
+
+## Example simple chat app
+```cs
+var instructSequence = new InstructSequence();
+
+var character = new Character(@"C:\Users\user\Downloads\Philomena Cunk.json"); // Make assistant roleplay as a character exported from SillyTavern
+var user = new User("Gavin", "Gavin is a 20 year old guy that wants to learn about Britain."); // Set user's name and description
+
+var llmParameters = new LlmParameters();
+llmParameters.temperature = 1;
+
+var client = new LlmClient(instructSequence, llmParameters, character, user); // assumes server is running on port 8000
+
+string userMessage = "";
+while (true)
+{
+    Console.Write("User: ");
+    userMessage = Console.ReadLine();
+
+    string response = client.GetResponse(userMessage).Result;
+
+    Console.WriteLine($"\nAssistant: {response}\n");
+}
+```
+
