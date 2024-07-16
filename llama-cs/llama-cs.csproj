@@ -11,7 +11,7 @@
 	<RepositoryUrl>https://github.com/hopto-dot/llama-cs</RepositoryUrl>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
-	<Version>0.0.1</Version>
+	<Version>0.0.1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
