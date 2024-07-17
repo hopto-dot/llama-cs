@@ -1,7 +1,7 @@
 # llama-cs
-A sillytaven-like c# library for interfacing with llama.cpp's [inference server](https://github.com/ggerganov/llama.cpp/tree/master/examples/server).
+A sillytaven-like c# library for interfacing with llama.cpp's [inference server](https://github.com/ggerganov/llama.cpp/tree/master/examples/server#llamacpp-http-server).
 
-If you are on Windows, you can find a build for the inference server by going to llama.cpp's latest [releases](https://github.com/ggerganov/llama.cpp/releases/latest) then downloading the file containing `bin-win-cuda` and depending on your version of cuda: `cu11.7.1`, or `cu12.2.0`. Avoid any file starting with `cudart`. You should run `llama-server.exe -m "gguf path here"` (along with any other arguments you want) to start the server.
+If you are on Windows, you can find a build for the server by going to llama.cpp's latest [releases](https://github.com/ggerganov/llama.cpp/releases/latest) then downloading the file containing `bin-win-cuda`, and depending on your version of cuda: `cu11.7.1`, or `cu12.2.0`. Avoid any file starting with `cudart`. You should run `llama-server.exe -m "gguf path here"` (along with any other arguments you want) to start the server.
 
 See simple example app [here](https://github.com/hopto-dot/llama-cs?tab=readme-ov-file#example-simple-chat-app).
 
