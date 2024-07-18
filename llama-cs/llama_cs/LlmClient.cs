@@ -30,10 +30,7 @@ namespace llama_cs
                 sequence = new InstructSequence();
             }
 
-            if (user != null)
-            {
-                sequence.User = user;
-            }
+            sequence.User = user;
 
             if (llmParameters == null)
             {
